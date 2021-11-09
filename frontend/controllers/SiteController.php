@@ -16,10 +16,9 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionIndex()
+    public function actionIndex($spot)
     {
-        $this->view->title = 'Feromon';
-        return $this->render('index');
+        return $this->render('index', ['spot' => $spot]);
     }
 
 }
