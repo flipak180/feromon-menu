@@ -5,10 +5,10 @@
 
 use backend\assets\AppAsset;
 use common\widgets\Alert;
-use yii\bootstrap4\Breadcrumbs;
-use yii\bootstrap4\Html;
-use yii\bootstrap4\Nav;
-use yii\bootstrap4\NavBar;
+use yii\bootstrap\Html;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
+use yii\widgets\Breadcrumbs;
 
 AppAsset::register($this);
 ?>
@@ -24,44 +24,33 @@ AppAsset::register($this);
 </head>
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
-
-<header>
+<div class="wrap">
     <?php
     NavBar::begin([
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
-        'innerContainerOptions' => ['class' => 'container-fluid'],
+        'innerContainerOptions' => ['class'=>'container-fluid'],
         'options' => [
-            'class' => 'navbar navbar-expand-md navbar-dark bg-dark fixed-top',
-        ],
-        'collapseOptions' => [
-            'class' => 'collapse navbar-collapse justify-content-end',
+            'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-    $menuItems = [
-        ['label' => 'Заведения', 'url' => ['/spots/index']],
-    ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Вход', 'url' => ['/site/login']];
+        $menuItems = [];
     } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post', ['class' => 'form-inline'])
-            . Html::submitButton(
-                'Выход (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
+        $menuItems = [
+            ['label' => 'Товары', 'url' => ['/products/index']],
+            ['label' => 'Категории', 'url' => ['/categories/index']],
+            ['label' => 'Заведения', 'url' => ['/spots/index']],
+            ['label' => 'Выход ('.Yii::$app->user->identity->username.') <span class="glyphicon glyphicon-log-out"></span>', 'url' => ['/site/logout']],
+        ];
     }
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
+        'options' => ['class' => 'navbar-nav navbar-right'],
+        'encodeLabels' => false,
         'items' => $menuItems,
     ]);
     NavBar::end();
     ?>
-</header>
-
-<main role="main" class="flex-shrink-0">
     <div class="container-fluid">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
@@ -69,14 +58,12 @@ AppAsset::register($this);
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>
-</main>
-
-<footer class="footer mt-auto py-3 text-muted">
+</div>
+<footer class="footer">
     <div class="container-fluid">
-        <p class="float-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
+        <p class="pull-left">&copy; <?= Yii::$app->name ?> <?= date('Y') ?></p>
     </div>
 </footer>
-
 <?php $this->endBody() ?>
 </body>
 </html>
