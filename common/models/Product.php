@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use himiklab\sortablegrid\SortableGridBehavior;
 use yii\behaviors\TimestampBehavior;
 
 /**
@@ -13,6 +14,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string|null $description
  * @property string|null $price
  * @property int $category_id
+ * @property int $position
  * @property int $created_at
  * @property int $updated_at
  */
@@ -32,8 +34,24 @@ class Product extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            TimestampBehavior::className()
+            TimestampBehavior::className(),
+            'sort' => [
+                'class' => SortableGridBehavior::className(),
+                'sortableAttribute' => 'position'
+            ],
         ];
+    }
+
+    /**
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert)
+    {
+        if (!$this->position) {
+            $this->position = 0;
+        }
+        return parent::beforeSave($insert);
     }
 
     /**
@@ -44,7 +62,7 @@ class Product extends \yii\db\ActiveRecord
         return [
             [['title', 'category_id'], 'required'],
             [['description'], 'string'],
-            [['category_id'], 'integer'],
+            [['category_id', 'position'], 'integer'],
             [['title', 'image', 'price'], 'string', 'max' => 255],
         ];
     }
@@ -61,6 +79,7 @@ class Product extends \yii\db\ActiveRecord
             'description' => 'Описание',
             'price' => 'Цена',
             'category_id' => 'Категория',
+            'position' => 'Позиция',
             'created_at' => 'Дата добавления',
             'updated_at' => 'Дата обновления',
         ];

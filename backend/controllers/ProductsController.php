@@ -4,7 +4,9 @@ namespace backend\controllers;
 
 use backend\models\ProductsSearch;
 use common\models\Product;
-use yii\filters\VerbFilter;
+use common\models\SliderItem;
+use himiklab\sortablegrid\SortableGridAction;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -18,17 +20,30 @@ class ProductsController extends Controller
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
-                ],
-            ]
-        );
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @return array|array[]
+     */
+    public function actions()
+    {
+        return [
+            'sort' => [
+                'class' => SortableGridAction::className(),
+                'modelName' => Product::className(),
+            ],
+        ];
     }
 
     /**
@@ -70,7 +85,7 @@ class ProductsController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
             }
         } else {
             $model->loadDefaultValues();
@@ -93,7 +108,7 @@ class ProductsController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

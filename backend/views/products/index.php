@@ -1,6 +1,6 @@
 <?php
 
-use yii\grid\GridView;
+use himiklab\sortablegrid\SortableGridView;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Добавление товара', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-    <?= GridView::widget([
+    <?= SortableGridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [

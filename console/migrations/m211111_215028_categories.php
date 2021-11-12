@@ -25,6 +25,7 @@ class m211111_215028_categories extends Migration
             'description' => $this->text(),
             'parent_id' => $this->integer(),
             'view' => $this->smallInteger(),
+            'position' => $this->integer()->notNull()->defaultValue(0),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);

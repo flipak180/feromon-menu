@@ -25,6 +25,7 @@ class m211111_215044_products extends Migration
             'description' => $this->text(),
             'price' => $this->string(),
             'category_id' => $this->integer()->notNull(),
+            'position' => $this->integer()->notNull()->defaultValue(0),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);

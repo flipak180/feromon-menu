@@ -4,9 +4,13 @@ namespace backend\controllers;
 
 use backend\models\CategoriesSearch;
 use common\models\Category;
-use yii\filters\VerbFilter;
+use common\models\SliderItem;
+use himiklab\sortablegrid\SortableGridAction;
+use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * CategoriesController implements the CRUD actions for Category model.
@@ -18,17 +22,30 @@ class CategoriesController extends Controller
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
-                ],
-            ]
-        );
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @return array|array[]
+     */
+    public function actions()
+    {
+        return [
+            'sort' => [
+                'class' => SortableGridAction::className(),
+                'modelName' => Category::className(),
+            ],
+        ];
     }
 
     /**
@@ -70,7 +87,7 @@ class CategoriesController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
             }
         } else {
             $model->loadDefaultValues();
@@ -93,7 +110,7 @@ class CategoriesController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
@@ -113,6 +130,23 @@ class CategoriesController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * @param $id
+     * @return Response
+     * @throws NotFoundHttpException
+     */
+    public function actionDeleteImage($id)
+    {
+        $model = $this->findModel($id);
+        if ($model->image) {
+            unlink(Yii::getAlias('@frontendWeb').$model->image);
+            $model->image = null;
+            $model->save();
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**
