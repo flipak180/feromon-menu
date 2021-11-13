@@ -61,4 +61,12 @@ class Spot extends \yii\db\ActiveRecord
             'updated_at' => 'Дата обновления',
         ];
     }
+
+    /**
+     * @return Spot[]
+     */
+    public static function getList()
+    {
+        return Spot::find()->all();
+    }
 }

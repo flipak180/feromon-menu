@@ -21,11 +21,13 @@ use yii\behaviors\TimestampBehavior;
  * @property int $updated_at
  *
  * @property Category $category
+ * @property ProductSpot[] $spots
  */
 class Product extends \yii\db\ActiveRecord
 {
     public $image_field;
     public $image2_field;
+    public $spots_field;
 
     /**
      * {@inheritdoc}
@@ -50,6 +52,15 @@ class Product extends \yii\db\ActiveRecord
     }
 
     /**
+     *
+     */
+    public function afterFind()
+    {
+        $this->setupSpots();
+        parent::afterFind();
+    }
+
+    /**
      * @param bool $insert
      * @return bool
      */
@@ -60,6 +71,7 @@ class Product extends \yii\db\ActiveRecord
         }
         Helper::uploadImage($this);
         Helper::uploadImage($this, 'image2');
+        $this->handleSpots();
         return parent::beforeSave($insert);
     }
 
@@ -74,6 +86,7 @@ class Product extends \yii\db\ActiveRecord
             [['category_id', 'position'], 'integer'],
             [['title', 'image', 'image2', 'price'], 'string', 'max' => 255],
             [['image_field', 'image2_field'], 'file', 'extensions' => ['png', 'jpg', 'gif', 'jpeg', 'webp'], 'maxSize' => 1024*1024*2],
+            [['spots_field'], 'safe']
         ];
     }
 
@@ -104,5 +117,54 @@ class Product extends \yii\db\ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSpots()
+    {
+        return $this->hasMany(ProductSpot::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     *
+     */
+    public function setupSpots()
+    {
+        $this->spots_field = [];
+        foreach ($this->spots as $spot) {
+            $this->spots_field[$spot->spot_id] = [
+                'active' => $spot->is_active ? 1 : 0,
+                'price' => $spot->price
+            ];
+        }
+    }
+
+    /**
+     *
+     */
+    public function handleSpots()
+    {
+        $currentSpots = [];
+        foreach ($this->spots as $spot) {
+            $currentSpots[$spot->spot_id] = $spot;
+        }
+
+        foreach ($this->spots_field as $spotId => $data) {
+            $currentSpot = $currentSpots[$spotId] ?? null;
+            if ($currentSpot) {
+                $currentSpot->price = $data['price'];
+                $currentSpot->is_active = $data['active'];
+                $currentSpot->save();
+            } else {
+                $newSpot = new ProductSpot();
+                $newSpot->product_id = $this->id;
+                $newSpot->spot_id = $spotId;
+                $newSpot->price = $data['price'];
+                $newSpot->is_active = $data['active'];
+                $newSpot->save();
+            }
+        }
     }
 }

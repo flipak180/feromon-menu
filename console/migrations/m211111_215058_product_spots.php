@@ -22,6 +22,8 @@ class m211111_215058_product_spots extends Migration
             'id' => $this->primaryKey(),
             'product_id' => $this->integer()->notNull(),
             'spot_id' => $this->integer()->notNull(),
+            'price' => $this->string(),
+            'is_active' => $this->boolean(),
         ], $tableOptions);
     }
 

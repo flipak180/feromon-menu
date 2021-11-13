@@ -122,3 +122,8 @@ a.desc:after {
 .image-preview img{
     margin-bottom: 10px;
 }
+
+.spots-info {
+    display: flex;
+    gap: 30px;
+}

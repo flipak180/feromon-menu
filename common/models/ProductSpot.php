@@ -8,6 +8,8 @@ namespace common\models;
  * @property int $id
  * @property int $product_id
  * @property int $spot_id
+ * @property string $is_active
+ * @property string $price
  */
 class ProductSpot extends \yii\db\ActiveRecord
 {
@@ -27,6 +29,8 @@ class ProductSpot extends \yii\db\ActiveRecord
         return [
             [['product_id', 'spot_id'], 'required'],
             [['product_id', 'spot_id'], 'integer'],
+            [['is_active'], 'boolean'],
+            [['price'], 'string', 'max' => 255],
         ];
     }
 
@@ -39,6 +43,8 @@ class ProductSpot extends \yii\db\ActiveRecord
             'id' => 'ID',
             'product_id' => 'Товар',
             'spot_id' => 'Заведение',
+            'is_active' => 'Активность',
+            'price' => 'Цена',
         ];
     }
 }
