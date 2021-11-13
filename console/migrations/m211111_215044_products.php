@@ -22,6 +22,7 @@ class m211111_215044_products extends Migration
             'id' => $this->primaryKey(),
             'title' => $this->string()->notNull(),
             'image' => $this->string(),
+            'image2' => $this->string(),
             'description' => $this->text(),
             'price' => $this->string(),
             'category_id' => $this->integer()->notNull(),

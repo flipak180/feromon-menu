@@ -18,6 +18,8 @@ use yii\behaviors\TimestampBehavior;
  * @property int $position
  * @property int $created_at
  * @property int $updated_at
+ *
+ * @property Category $parent
  */
 class Category extends \yii\db\ActiveRecord
 {
@@ -130,8 +132,12 @@ class Category extends \yii\db\ActiveRecord
     /**
      * @return array|\yii\db\ActiveRecord[]
      */
-    public static function getList()
+    public static function getList($onlyRoot = false)
     {
-        return Category::find()->where(['parent_id' => null])->orderBy(['position' => SORT_ASC])->all();
+        $categories = Category::find();
+        if ($onlyRoot) {
+            $categories->where(['parent_id' => null]);
+        }
+        return $categories->orderBy(['position' => SORT_ASC])->all();
     }
 }

@@ -6,9 +6,11 @@ use backend\models\ProductsSearch;
 use common\models\Product;
 use common\models\SliderItem;
 use himiklab\sortablegrid\SortableGridAction;
+use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * ProductsController implements the CRUD actions for Product model.
@@ -128,6 +130,40 @@ class ProductsController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * @param $id
+     * @return Response
+     * @throws NotFoundHttpException
+     */
+    public function actionDeleteImage($id)
+    {
+        $model = $this->findModel($id);
+        if ($model->image) {
+            unlink(Yii::getAlias('@frontendWeb').$model->image);
+            $model->image = null;
+            $model->save();
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    /**
+     * @param $id
+     * @return Response
+     * @throws NotFoundHttpException
+     */
+    public function actionDeleteImage2($id)
+    {
+        $model = $this->findModel($id);
+        if ($model->image2) {
+            unlink(Yii::getAlias('@frontendWeb').$model->image2);
+            $model->image2 = null;
+            $model->save();
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**

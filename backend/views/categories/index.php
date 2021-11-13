@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($model) {
                     return $model->parent ? Html::a($model->parent->title, ['categories/update', 'id' => $model->parent_id]) : '[не указан]';
                 },
-                'filter' => Html::activeDropDownList($searchModel, 'parent_id', ArrayHelper::map(Category::getList(), 'id', 'title'), ['class' => 'form-control', 'prompt' => '[все]']),
+                'filter' => Html::activeDropDownList($searchModel, 'parent_id', ArrayHelper::map(Category::getList(true), 'id', 'title'), ['class' => 'form-control', 'prompt' => '[все]']),
             ],
             [
                 'attribute' => 'view',

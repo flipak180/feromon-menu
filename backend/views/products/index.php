@@ -1,6 +1,9 @@
 <?php
 
+use common\components\Helper;
+use common\models\Category;
 use himiklab\sortablegrid\SortableGridView;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -21,15 +24,41 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'id',
+            [
+                'attribute' => 'id',
+                'headerOptions' => ['style' => 'width: 75px;'],
+            ],
             'title',
-            'image',
-            'description:ntext',
-            'price',
-            //'category_id',
-            //'created_at',
+            [
+                'attribute' => 'image',
+                'format' => 'raw',
+                'value' => function($model) {
+                    return Helper::thumb($model->image, 50, 50);
+                },
+                'filter' => false,
+                'headerOptions' => ['style' => 'width: 100px;'],
+            ],
+            //'description:ntext',
+            [
+                'attribute' => 'price',
+                'headerOptions' => ['style' => 'width: 100px;'],
+            ],
+            [
+                'attribute' => 'category_id',
+                'format' => 'raw',
+                'value' => function($model) {
+                    return $model->category ? Html::a($model->category->title, ['categories/update', 'id' => $model->category_id]) : '[не указан]';
+                },
+                'filter' => Html::activeDropDownList($searchModel, 'category_id', ArrayHelper::map(Category::getList(), 'id', 'title'), ['class' => 'form-control', 'prompt' => '[все]']),
+            ],
+            [
+                'attribute' => 'created_at',
+                'format' => 'datetime',
+                'filter' => false,
+                'headerOptions' => ['style' => 'width: 200px;'],
+            ],
             //'updated_at',
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn', 'template' => '{update}{delete}'],
         ],
     ]); ?>
 </div>
