@@ -19,7 +19,6 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         '/design/slick/slick.min.js',
-        '/design/js/mask.js',
         '/design/js/script.js',
     ];
     public $depends = [

@@ -130,13 +130,18 @@ class Category extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return array|\yii\db\ActiveRecord[]
+     * @param false $onlyRoot
+     * @param null $parentId
+     * @return Category[]
      */
-    public static function getList($onlyRoot = false)
+    public static function getList($onlyRoot = false, $parentId = null)
     {
         $categories = Category::find();
         if ($onlyRoot) {
             $categories->where(['parent_id' => null]);
+        }
+        if ($parentId) {
+            $categories->where(['parent_id' => $parentId]);
         }
         return $categories->orderBy(['position' => SORT_ASC])->all();
     }

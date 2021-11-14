@@ -2,7 +2,6 @@
 namespace common\components;
 
 use himiklab\thumbnail\EasyThumbnailImage;
-use NumberFormatter;
 use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
@@ -10,19 +9,9 @@ use yii\web\UploadedFile;
 class Helper
 {
 
-    public static function price($number = 0, $useCurrency = true): string
+    public static function price($number = 0): string
     {
-        if (!$useCurrency) {
-            return Yii::$app->formatter->asCurrency($number, 'RUB');
-        }
-
-        $number = Yii::$app->currency->convert($number);
-
-        return Yii::$app->formatter->asCurrency(
-            $number,
-            Yii::$app->currency->current,
-            [NumberFormatter::MIN_FRACTION_DIGITS => 0]
-        );
+        return Yii::$app->formatter->asCurrency($number, 'RUB');
     }
 
     public static function thumb($path, $width, $height, $options = []): string

@@ -167,4 +167,13 @@ class Product extends \yii\db\ActiveRecord
             }
         }
     }
+
+    /**
+     * @param $categoryId
+     * @return Product[]
+     */
+    public static function getList($categoryId)
+    {
+        return Product::find()->where(['category_id' => $categoryId])->all();
+    }
 }

@@ -1,8 +1,32 @@
 <?php
 /* @var $spot \common\models\Spot */
 
+use common\components\Helper;
+use common\models\Category;
+use common\models\Product;
+
 $this->title = $spot->title;
 ?>
+
+<aside>
+    <input id="menu__toggle" type="checkbox" />
+    <label class="menu__btn" for="menu__toggle">
+        <span></span>
+    </label>
+    <ul class="menu__box">
+        <?php foreach (Category::getList(true) as $rootCategory): ?>
+            <li><a class="menu__item" href="#"><?= $rootCategory->title ?></a></li>
+        <?php endforeach; ?>
+    </ul>
+</aside>
+
+<div id="mini-cart">
+    <div class="icon">
+        <img src="/design/img/cart.png" alt="" class="img-responsive">
+    </div>
+    <span></span>
+    <strong></strong>
+</div>
 
 <header class="container-fluid">
     <div class="container">
@@ -20,6 +44,7 @@ $this->title = $spot->title;
         </div>
     </div>
 </header>
+
 <section class="video">
     <video autoplay loop muted>
         <source src="/design/img/video.mp4">
@@ -30,6 +55,7 @@ $this->title = $spot->title;
         <img src="/design/img/scroll.gif" alt="">
     </div>
 </section>
+
 <section class="slider">
     <img src="/design/img/slide1.webp" alt="">
     <img src="/design/img/slide2.webp" alt="">
@@ -38,291 +64,42 @@ $this->title = $spot->title;
     <img src="/design/img/slide5.webp" alt="">
     <img src="/design/img/slide6.webp" alt="">
 </section>
+
 <section class="container-fluid menu">
     <div class="container">
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu1.webp)">Кальян</a>
-            <div class="content">
-                <div class="subcategory-item">
-                    <h3>Фруктовые чаши <span class="line"></span></h3>
-                    <p>Закажите кальян на фруктовой чаше (табак включен в стоимость чаши)</p>
-                    <div class="products-list grid-4">
-                        <div class="products-list-item">
-                            <div class="image">
-                                <img class="img-responsive" src="/design/img/product1.webp" alt="">
-                                <img class=img-responsive src="/design/img/product1-1.webp" alt="">
-                            </div>
-                            <h4>Апельсин</h4>
-                            <div class="price">690 р.</div>
-                            <a href="" class="btn">Добавить к заказу</a>
-                        </div>
-                        <div class="products-list-item">
-                            <div class="image">
-                                <img class="img-responsive" src="/design/img/product1.webp" alt="">
-                                <img class=img-responsive src="/design/img/product1-1.webp" alt="">
-                            </div>
-                            <h4>Апельсин</h4>
-                            <div class="price">690 р.</div>
-                            <a href="" class="btn">Добавить к заказу</a>
-                        </div>
-                        <div class="products-list-item">
-                            <div class="image">
-                                <img class="img-responsive" src="/design/img/product1.webp" alt="">
-                                <img class=img-responsive src="/design/img/product1-1.webp" alt="">
-                            </div>
-                            <h4>Апельсин</h4>
-                            <div class="price">690 р.</div>
-                            <a href="" class="btn">Добавить к заказу</a>
-                        </div>
-                        <div class="products-list-item">
-                            <div class="image">
-                                <img class="img-responsive" src="/design/img/product1.webp" alt="">
-                                <img class=img-responsive src="/design/img/product1-1.webp" alt="">
-                            </div>
-                            <h4>Апельсин</h4>
-                            <div class="price">690 р.</div>
-                            <a href="" class="btn">Добавить к заказу</a>
-                        </div>
-                        <div class="products-list-item">
-                            <div class="image">
-                                <img class="img-responsive" src="/design/img/product1.webp" alt="">
-                                <img class=img-responsive src="/design/img/product1-1.webp" alt="">
-                            </div>
-                            <h4>Апельсин</h4>
-                            <div class="price">690 р.</div>
-                            <a href="" class="btn">Добавить к заказу</a>
-                        </div>
-                        <div class="products-list-item">
-                            <div class="image">
-                                <img class="img-responsive" src="/design/img/product1.webp" alt="">
-                                <img class=img-responsive src="/design/img/product1-1.webp" alt="">
-                            </div>
-                            <h4>Апельсин</h4>
-                            <div class="price">690 р.</div>
-                            <a href="" class="btn">Добавить к заказу</a>
-                        </div>
-                    </div>
-                    <div class="products-table">
-                        <div class="products-table-item">
-                            <div>
-                                <h4>Кальян по фиксированной стоимости</h4>
-                            </div>
-                            <div>
-                                <strong class="price">1200 р.</strong>
-                                <a href="" class="btn">Добавить к заказу</a>
+        <?php foreach (Category::getList(true) as $rootCategory): ?>
+            <div class="category-item">
+                <a href="" class="opener" style="background-image: url(<?= $rootCategory->image ?>)"><?= $rootCategory->title ?></a>
+                <div class="content">
+                    <?= $rootCategory->description ?>
+                    <?php foreach (Category::getList(false, $rootCategory->id) as $childCategory): ?>
+                        <div class="subcategory-item">
+                            <h3><?= $childCategory->title ?> <span class="line"></span></h3>
+                            <?= $childCategory->description ?>
+                            <div class="products-list grid-4">
+                                <?php foreach (Product::getList($childCategory->id) as $product): ?>
+                                    <div class="products-list-item">
+                                        <div class="image">
+                                            <img class="img-responsive" src="<?= $product->image ?>" alt="">
+                                            <?php if ($product->image2): ?>
+                                                <img class=img-responsive src="<?= $product->image2 ?>" alt="">
+                                            <?php endif ?>
+                                        </div>
+                                        <h4><?= $product->title ?></h4>
+                                        <?= $product->description ?>
+                                        <div class="price"><?= Helper::price($product->price) ?></div>
+                                        <a href="" class="add-to-cart" data-id="<?= $product->id ?>">Добавить к заказу</a>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
                         </div>
-                        <div class="products-table-item">
-                            <div>
-                                <h4>Усилители крепости и вкуса</h4>
-                                <p>(ассортимент уточняйте у мастера по кальяну)</p>
-                            </div>
-                            <div>
-                                <strong class="price">100 р.</strong>
-                                <a href="" class="btn">Добавить к заказу</a>
-                            </div>
-                        </div>
-                        <div class="products-table-item">
-                            <div>
-                                <h4>Электронная сигарета Soak</h4>
-                                <p>1500 затяжек</p>
-                            </div>
-                            <div>
-                                <strong class="price">850 р.</strong>
-                                <a href="" class="btn">Добавить к заказу</a>
-                            </div>
-                        </div>
-                        <div class="products-table-item">
-                            <div>
-                                <h4>Табак Take Away</h4>
-                            </div>
-                            <div>
-                                <strong class="price">450 р.</strong>
-                                <a href="" class="btn">Добавить к заказу</a>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu2.webp)">Breakfast by Feromon</a>
-            <div class="content">
-                <h4>Конопляный чай</h4>
-                <div class="products-table">
-                    <div class="products-table-item">
-                        <div>
-                            <h4>Большая шишка</h4>
-                            <p>Конопляная Большая Шишка, прогретая лучами солнца в Долине Хубачар на территории Республики, сконцентрировала в себе все самое необходимое и полезное от Сибирской природы</p>
-                        </div>
-                        <div>
-                            <strong class="price">180р / 460 р.</strong>
-                            <a href="" class="btn">Добавить к заказу</a>
-                        </div>
-                    </div>
-                    <div class="products-table-item">
-                        <div>
-                            <h4>Освежающий лимон</h4>
-                            <p>Конопляный чай с утонченным звучанием конопляных листьев и освежающий ароматной цедрой лимона. Организм получает полезные вещества, наполняется витаминами и антиоксидантами в целом улучшается самочувствие</p>
-                        </div>
-                        <div>
-                            <strong class="price">200 р / 480 р.</strong>
-                            <a href="" class="btn">Добавить к заказу</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu3.webp)">Бизнес ланчи</a>
-            <div class="content">
-                <div class="products-list grid-2">
-                    <div class="products-list-item">
-                        <div class="image">
-                            <img class="img-responsive" src="/design/img/product2.jpg" alt="">
-                        </div>
-                        <h4>Апельсин</h4>
-                        <p>Воздушные медовые коржи с прослойкой из сметанного крема не оставят вас равнодушными</p>
-                        <div class="price">690 р.</div>
-                        <a href="" class="btn">Добавить к заказу</a>
-                    </div>
-                    <div class="products-list-item">
-                        <div class="image">
-                            <img class="img-responsive" src="/design/img/product3.webp" alt="">
-                        </div>
-                        <h4>Апельсин</h4>
-                        <div class="price">690 р.</div>
-                        <a href="" class="btn">Добавить к заказу</a>
-                    </div>
-                    <div class="products-list-item">
-                        <div class="image">
-                            <img class="img-responsive" src="/design/img/product2.jpg" alt="">
-                        </div>
-                        <h4>Апельсин</h4>
-                        <div class="price">690 р.</div>
-                        <a href="" class="btn">Добавить к заказу</a>
-                    </div>
-                    <div class="products-list-item">
-                        <div class="image">
-                            <img class="img-responsive" src="/design/img/product3.webp" alt="">
-                        </div>
-                        <h4>Апельсин</h4>
-                        <div class="price">690 р.</div>
-                        <a href="" class="btn">Добавить к заказу</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu4.webp)">Азиатское меню</a>
-            <div class="content">
-                <div class="products-list grid-3">
-                    <div class="products-list-item">
-                        <div class="image">
-                            <img class="img-responsive" src="/design/img/product2.jpg" alt="">
-                        </div>
-                        <h4>Апельсин</h4>
-                        <p>Воздушные медовые коржи с прослойкой из сметанного крема не оставят вас равнодушными</p>
-                        <div class="price">690 р.</div>
-                        <a href="" class="btn">Добавить к заказу</a>
-                    </div>
-                    <div class="products-list-item">
-                        <div class="image">
-                            <img class="img-responsive" src="/design/img/product3.webp" alt="">
-                        </div>
-                        <h4>Апельсин</h4>
-                        <div class="price">690 р.</div>
-                        <a href="" class="btn">Добавить к заказу</a>
-                    </div>
-                    <div class="products-list-item">
-                        <div class="image">
-                            <img class="img-responsive" src="/design/img/product2.jpg" alt="">
-                        </div>
-                        <h4>Апельсин</h4>
-                        <div class="price">690 р.</div>
-                        <a href="" class="btn">Добавить к заказу</a>
-                    </div>
-                    <div class="products-list-item">
-                        <div class="image">
-                            <img class="img-responsive" src="/design/img/product3.webp" alt="">
-                        </div>
-                        <h4>Апельсин</h4>
-                        <div class="price">690 р.</div>
-                        <a href="" class="btn">Добавить к заказу</a>
-                    </div>
-                    <div class="products-list-item">
-                        <div class="image">
-                            <img class="img-responsive" src="/design/img/product3.webp" alt="">
-                        </div>
-                        <h4>Апельсин</h4>
-                        <div class="price">690 р.</div>
-                        <a href="" class="btn">Добавить к заказу</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu5.webp)">Закуски</a>
-            <div class="content"></div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu6.webp)">Салаты</a>
-            <div class="content"></div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu7.webp)">Супы</a>
-            <div class="content"></div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu8.webp)">Стрит фуд</a>
-            <div class="content"></div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu9.webp)">Пасты</a>
-            <div class="content"></div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu10.webp)">Горячее</a>
-            <div class="content"></div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu11.webp)">Гарниры и соусы</a>
-            <div class="content"></div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu12.webp)">Десерты</a>
-            <div class="content"></div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu13.webp)">Пивная карта</a>
-            <div class="content"></div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu14.webp)">Вино</a>
-            <div class="content"></div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu15.webp)">Коктейли</a>
-            <div class="content"></div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu16.webp)">Крепкий алкоголь (50 мл)</a>
-            <div class="content"></div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu17.webp)">Б/а напитки</a>
-            <div class="content"></div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu18.webp)">Чай</a>
-            <div class="content"></div>
-        </div>
-        <div class="category-item">
-            <a href="" class="opener" style="background-image: url(/design/img/menu19.webp)">Кофе</a>
-            <div class="content"></div>
-        </div>
+        <?php endforeach; ?>
     </div>
 </section>
+
 <section class="container-fluid map">
     <div class="container">
         <div class="left">
@@ -350,6 +127,7 @@ $this->title = $spot->title;
         </div>
     </div>
 </section>
+
 <section class="container-fluid app">
     <div class="container">
         <div class="left">
@@ -371,8 +149,16 @@ $this->title = $spot->title;
         </div>
     </div>
 </section>
+
 <footer class="container-fluid">
     <div class="container">
         Feromon Group © <?= date('Y') ?>
     </div>
 </footer>
+
+<div id="overlay"></div>
+<div id="cart-popup"></div>
+<div id="age-popup">
+    <p>Вам есть 18 лет?</p>
+    <a href="">Да, мне есть 18 лет</a>
+</div>

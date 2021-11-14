@@ -27,7 +27,7 @@ class CustomUrlRule extends BaseObject implements UrlRuleInterface
         }
         $pathParts = explode('/', $pathInfo);
         $lastPart = end($pathParts);
-        if (!$lastPart) $lastPart = '/';
+        if (!$lastPart) $lastPart = 'efimova';
 
         $spot = Spot::find()->where(['url' => $lastPart])->one();
         if ($spot) {
