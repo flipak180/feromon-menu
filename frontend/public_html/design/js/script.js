@@ -107,22 +107,22 @@ $(function() {
         for (let id in cart) {
             cartHtml += `
                 <div class="cart-item" data-id="${id}">
-                    <div class="image" style="background-image: url(img/product1.webp)"></div>
+                    <div class="image" style="background-image: url(/design/img/product1.webp)"></div>
                     <div class="info">
                         <h4>${cart[id].title}</h4>
                     </div>
                     <div class="amount">
                         <div class="minus">
-                            <img src="img/minus.svg" alt="" width="20" height="20">
+                            <img src="/design/img/minus.svg" alt="" width="20" height="20">
                         </div>
                         <span>${cart[id].amount}</span>
                         <div class="plus">
-                            <img src="img/plus.svg" alt="" width="20" height="20">
+                            <img src="/design/img/plus.svg" alt="" width="20" height="20">
                         </div>
                     </div>
                     <div class="price">${(cart[id].totalPrice).toLocaleString()} р.</div>
                     <div class="remove">
-                        <img src="img/remove.svg" alt="" width="20" height="20">
+                        <img src="/design/img/remove.svg" alt="" width="20" height="20">
                     </div>
                 </div>
             `;
