@@ -5,6 +5,7 @@ namespace common\models;
 use common\components\Helper;
 use himiklab\sortablegrid\SortableGridBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "products".
@@ -169,11 +170,35 @@ class Product extends \yii\db\ActiveRecord
     }
 
     /**
-     * @param $categoryId
-     * @return Product[]
+     * @param $spotId
+     * @return array
      */
-    public static function getList($categoryId)
+    public static function getTree($spotId): array
     {
-        return Product::find()->where(['category_id' => $categoryId])->all();
+        $flat = [];
+        $tree = [];
+
+        $categories = Category::find()->orderBy('parent_id')->asArray()->all();
+        $products = Product::find()->joinWith('spots s')->andWhere(['s.spot_id' => $spotId, 's.is_active' => true])->asArray()->all();
+
+        foreach ($categories as $category) {
+            $flat[$category['id']] = ArrayHelper::merge($category, ['categories' => [], 'products' => []]);
+        }
+
+        foreach ($products as $product) {
+            $flat[$product['category_id']]['products'][] = $product;
+        }
+
+        foreach ($flat as $category) {
+            if (!$category['parent_id']) {
+                $tree[$category['id']] = $category;
+            } else {
+                if (count($category['products'])) {
+                    $tree[$category['parent_id']]['categories'][] = $category;
+                }
+            }
+        }
+
+        return $tree;
     }
 }

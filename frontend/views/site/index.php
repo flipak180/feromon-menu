@@ -67,28 +67,29 @@ $this->title = $spot->title;
 
 <section class="container-fluid menu">
     <div class="container">
-        <?php foreach (Category::getList(true) as $rootCategory): ?>
+        <?php foreach (Product::getTree($spot->id) as $rootCategory): ?>
+            <?php if (!count($rootCategory['categories'])) continue; ?>
             <div class="category-item">
-                <a href="" class="opener" style="background-image: url(<?= $rootCategory->image ?>)"><?= $rootCategory->title ?></a>
+                <a href="" class="opener" style="background-image: url(<?= $rootCategory['image'] ?>)"><?= $rootCategory['title'] ?></a>
                 <div class="content">
-                    <?= $rootCategory->description ?>
-                    <?php foreach (Category::getList(false, $rootCategory->id) as $childCategory): ?>
+                    <?= $rootCategory['description'] ?>
+                    <?php foreach ($rootCategory['categories'] as $childCategory): ?>
                         <div class="subcategory-item">
-                            <h3><?= $childCategory->title ?> <span class="line"></span></h3>
-                            <?= $childCategory->description ?>
+                            <h3><?= $childCategory['title'] ?> <span class="line"></span></h3>
+                            <?= $childCategory['description'] ?>
                             <div class="products-list grid-4">
-                                <?php foreach (Product::getList($childCategory->id) as $product): ?>
+                                <?php foreach ($childCategory['products'] as $product): ?>
                                     <div class="products-list-item">
                                         <div class="image">
-                                            <img class="img-responsive" src="<?= $product->image ?>" alt="">
-                                            <?php if ($product->image2): ?>
-                                                <img class=img-responsive src="<?= $product->image2 ?>" alt="">
+                                            <img class="img-responsive" src="<?= $product['image'] ?>" alt="">
+                                            <?php if ($product['image2']): ?>
+                                                <img class=img-responsive src="<?= $product['image2'] ?>" alt="">
                                             <?php endif ?>
                                         </div>
-                                        <h4><?= $product->title ?></h4>
-                                        <?= $product->description ?>
-                                        <div class="price"><?= Helper::price($product->price) ?></div>
-                                        <a href="" class="add-to-cart" data-id="<?= $product->id ?>">Добавить к заказу</a>
+                                        <h4><?= $product['title'] ?></h4>
+                                        <?= $product['description'] ?>
+                                        <div class="price"><?= Helper::price($product['price']) ?></div>
+                                        <a href="" class="add-to-cart" data-id="<?= $product['id'] ?>">Добавить к заказу</a>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
