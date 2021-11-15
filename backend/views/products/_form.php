@@ -59,22 +59,26 @@ use yii\widgets\ActiveForm;
     ]) ?>
     <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'category_id')->widget(Select2::classname(), [
-        'data' => ArrayHelper::map(Category::getList(), 'id', 'title'),
+        'data' => ArrayHelper::map(Category::getList(), 'id', function($item) {
+            return $item->getPath();
+        }),
         'options' => ['placeholder' => 'Выберите категорию'],
         'pluginOptions' => [
             'allowClear' => true
         ],
     ]) ?>
-    <hr>
-    <div class="form-group spots-info">
-        <?php foreach (Spot::getList() as $spot): ?>
-            <div>
-                <?= Html::activeCheckbox($model, 'spots_field['.$spot->id.'][active]', ['label' => $spot->title]) ?>
-                <?= Html::activeTextInput($model, 'spots_field['.$spot->id.'][price]', ['class' => 'form-control']) ?>
-            </div>
-        <?php endforeach; ?>
-    </div>
-    <hr>
+    <?php if (!$model->isNewRecord): ?>
+        <hr>
+        <div class="form-group spots-info">
+            <?php foreach (Spot::getList() as $spot): ?>
+                <div>
+                    <?= Html::activeCheckbox($model, 'spots_field['.$spot->id.'][active]', ['label' => $spot->title]) ?>
+                    <?= Html::activeTextInput($model, 'spots_field['.$spot->id.'][price]', ['class' => 'form-control']) ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <hr>
+    <?php endif ?>
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>

@@ -77,22 +77,38 @@ $this->title = $spot->title;
                         <div class="subcategory-item">
                             <h3><?= $childCategory['title'] ?> <span class="line"></span></h3>
                             <?= $childCategory['description'] ?>
-                            <div class="products-list grid-4">
-                                <?php foreach ($childCategory['products'] as $product): ?>
-                                    <div class="products-list-item">
-                                        <div class="image">
-                                            <img class="img-responsive" src="<?= $product['image'] ?>" alt="">
-                                            <?php if ($product['image2']): ?>
-                                                <img class=img-responsive src="<?= $product['image2'] ?>" alt="">
-                                            <?php endif ?>
+                            <?php if ($childCategory['view'] == Category::VIEW_TABLE): ?>
+                                <div class="products-table">
+                                    <?php foreach ($childCategory['products'] as $product): ?>
+                                        <div class="products-table-item">
+                                            <div>
+                                                <h4><?= $product['title'] ?></h4>
+                                            </div>
+                                            <div>
+                                                <strong class="price"><?= Helper::price($product['price']) ?></strong>
+                                                <a href="" class="add-to-cart" data-id="<?= $product['id'] ?>">Добавить к заказу</a>
+                                            </div>
                                         </div>
-                                        <h4><?= $product['title'] ?></h4>
-                                        <?= $product['description'] ?>
-                                        <div class="price"><?= Helper::price($product['price']) ?></div>
-                                        <a href="" class="add-to-cart" data-id="<?= $product['id'] ?>">Добавить к заказу</a>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <div class="products-list grid-<?= $childCategory['view'] ?>">
+                                    <?php foreach ($childCategory['products'] as $product): ?>
+                                        <div class="products-list-item">
+                                            <div class="image">
+                                                <img class="img-responsive" src="<?= $product['image'] ?>" alt="">
+                                                <?php if ($product['image2']): ?>
+                                                    <img class=img-responsive src="<?= $product['image2'] ?>" alt="">
+                                                <?php endif ?>
+                                            </div>
+                                            <h4><?= $product['title'] ?></h4>
+                                            <?= $product['description'] ?>
+                                            <div class="price"><?= Helper::price($product['price']) ?></div>
+                                            <a href="" class="add-to-cart" data-id="<?= $product['id'] ?>">Добавить к заказу</a>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif ?>
                         </div>
                     <?php endforeach; ?>
                 </div>

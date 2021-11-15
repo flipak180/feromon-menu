@@ -124,9 +124,17 @@ class Category extends \yii\db\ActiveRecord
     /**
      * @return string
      */
-    public function getViewName()
+    public function getViewName(): string
     {
         return self::getViewsList()[$this->view];
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->parent ? $this->parent->title . ' / ' . $this->title : $this->title;
     }
 
     /**
@@ -134,7 +142,7 @@ class Category extends \yii\db\ActiveRecord
      * @param null $parentId
      * @return Category[]
      */
-    public static function getList($onlyRoot = false, $parentId = null)
+    public static function getList($onlyRoot = false, $parentId = null): array
     {
         $categories = Category::find();
         if ($onlyRoot) {

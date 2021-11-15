@@ -72,8 +72,21 @@ class Product extends \yii\db\ActiveRecord
         }
         Helper::uploadImage($this);
         Helper::uploadImage($this, 'image2');
-        $this->handleSpots();
+        if (!$insert) {
+            $this->handleSpots();
+        }
         return parent::beforeSave($insert);
+    }
+
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            $this->fillSpots();
+        }
     }
 
     /**
@@ -139,6 +152,22 @@ class Product extends \yii\db\ActiveRecord
                 'active' => $spot->is_active ? 1 : 0,
                 'price' => $spot->price
             ];
+        }
+    }
+
+    /**
+     *
+     */
+    public function fillSpots()
+    {
+        /** @var Spot $spot */
+        foreach (Spot::find()->all() as $spot) {
+            $newSpot = new ProductSpot();
+            $newSpot->product_id = $this->id;
+            $newSpot->spot_id = $spot->id;
+            $newSpot->price = $this->price;
+            $newSpot->is_active = true;
+            $newSpot->save();
         }
     }
 
