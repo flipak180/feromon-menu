@@ -67,18 +67,16 @@ use yii\widgets\ActiveForm;
             'allowClear' => true
         ],
     ]) ?>
-    <?php if (!$model->isNewRecord): ?>
-        <hr>
-        <div class="form-group spots-info">
-            <?php foreach (Spot::getList() as $spot): ?>
-                <div>
-                    <?= Html::activeCheckbox($model, 'spots_field['.$spot->id.'][active]', ['label' => $spot->title]) ?>
-                    <?= Html::activeTextInput($model, 'spots_field['.$spot->id.'][price]', ['class' => 'form-control']) ?>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <hr>
-    <?php endif ?>
+    <hr>
+    <div class="form-group spots-info">
+        <?php foreach (Spot::getList() as $spot): ?>
+            <div>
+                <?= Html::activeCheckbox($model, 'spots_field['.$spot->id.'][active]', ['label' => $spot->title]) ?>
+                <?= Html::activeTextInput($model, 'spots_field['.$spot->id.'][price]', ['class' => 'form-control']) ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <hr>
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>

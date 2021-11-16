@@ -72,9 +72,6 @@ class Product extends \yii\db\ActiveRecord
         }
         Helper::uploadImage($this);
         Helper::uploadImage($this, 'image2');
-        if (!$insert) {
-            $this->handleSpots();
-        }
         return parent::beforeSave($insert);
     }
 
@@ -84,9 +81,7 @@ class Product extends \yii\db\ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if ($insert) {
-            $this->fillSpots();
-        }
+        $this->handleSpots();
     }
 
     /**
