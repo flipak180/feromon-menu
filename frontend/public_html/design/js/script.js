@@ -62,7 +62,7 @@ $(function() {
     });
 
     //
-    let cart = JSON.parse(localStorage.getItem('cart') || '{}'),
+    let cart = JSON.parse(localStorage.getItem('cart2') || '{}'),
         totalAmount = 0,
         totalPrice = 0,
         cartPopup = $('#cart-popup');
@@ -73,13 +73,14 @@ $(function() {
         let cont = $(this).closest('.products-list-item, .products-table-item'),
             id = $(this).data('id'),
             title = cont.find('h4').text(),
-            price = parseInt(cont.find('.price').text().replace(' ', ''));
+            price = parseInt(cont.find('.price').text().replace(' ', '')),
+            image = $(this).data('image');
 
         if (id in cart) {
             cart[id].amount += 1;
             cart[id].totalPrice = cart[id].amount * cart[id].price;
         } else {
-            cart[id] = {title, price, totalPrice: price, amount: 1};
+            cart[id] = {title, price, totalPrice: price, amount: 1, image};
         }
 
         totalAmount += 1;
@@ -93,7 +94,7 @@ $(function() {
     });
 
     function saveCart() {
-        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem('cart2', JSON.stringify(cart));
     }
 
     function updateMiniCart() {
@@ -107,7 +108,7 @@ $(function() {
         for (let id in cart) {
             cartHtml += `
                 <div class="cart-item" data-id="${id}">
-                    <div class="image" style="background-image: url(/design/img/product1.webp)"></div>
+                    <div class="image" style="background-image: url(${cart[id].image || '/design/img/no-image.png'})"></div>
                     <div class="info">
                         <h4>${cart[id].title}</h4>
                     </div>

@@ -271,6 +271,9 @@ section.menu {
     text-decoration: none;
     display: inline-block;
 }
+.products-list-item .image {
+    min-height: 420px;
+}
 .products-list-item img:nth-child(2) {
     display: none;
 }
@@ -632,7 +635,9 @@ footer {
 }
 
 @media (max-width: 1199px) {
-
+    .products-list-item .image {
+        min-height: auto;
+    }
 }
 @media (max-width: 991px) {
     .grid-4 {

@@ -104,7 +104,7 @@ $this->title = $spot->title;
                                             <h4><?= $product['title'] ?></h4>
                                             <?= $product['description'] ?>
                                             <div class="price"><?= Helper::price($product['price']) ?></div>
-                                            <a href="" class="add-to-cart" data-id="<?= $product['id'] ?>">Добавить к заказу</a>
+                                            <a href="" class="add-to-cart" data-id="<?= $product['id'] ?>" data-image="<?= $product['image'] ?>">Добавить к заказу</a>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>

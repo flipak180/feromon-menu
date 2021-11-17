@@ -15,11 +15,11 @@ class AppAsset extends AssetBundle
         '/design/css/bootstrap-reboot.min.css',
         '/design/slick/slick.css',
         '/design/slick/slick-theme.css',
-        '/design/css/style.css',
+        '/design/css/style.css?v=2',
     ];
     public $js = [
         '/design/slick/slick.min.js',
-        '/design/js/script.js',
+        '/design/js/script.js?v=2',
     ];
     public $depends = [
         'yii\web\YiiAsset',
