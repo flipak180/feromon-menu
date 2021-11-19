@@ -46,6 +46,10 @@ class SpotsSearch extends Spot
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['defaultOrder' => ['title' => SORT_ASC]],
+            'pagination' => [
+                'pageSize' => 500,
+            ],
         ]);
 
         $this->load($params);
