@@ -6,6 +6,8 @@ use common\models\Category;
 use common\models\Product;
 
 $this->title = $spot->title;
+
+$productTree = Product::getTree($spot->id);
 ?>
 
 <aside>
@@ -14,8 +16,9 @@ $this->title = $spot->title;
         <span></span>
     </label>
     <ul class="menu__box">
-        <?php foreach (Category::getList(true) as $rootCategory): ?>
-            <li><a class="menu__item" href="#"><?= $rootCategory->title ?></a></li>
+        <?php foreach ($productTree as $rootCategory): ?>
+            <?php if (!count($rootCategory['categories'])) continue; ?>
+            <li><a class="menu__item" href="#"><?= $rootCategory['title'] ?></a></li>
         <?php endforeach; ?>
     </ul>
 </aside>
@@ -67,7 +70,7 @@ $this->title = $spot->title;
 
 <section class="container-fluid menu">
     <div class="container">
-        <?php foreach (Product::getTree($spot->id) as $rootCategory): ?>
+        <?php foreach ($productTree as $rootCategory): ?>
             <?php if (!count($rootCategory['categories'])) continue; ?>
             <div class="category-item">
                 <a href="" class="opener" style="background-image: url(<?= $rootCategory['image'] ?>)"><?= $rootCategory['title'] ?></a>
