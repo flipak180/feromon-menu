@@ -10,6 +10,9 @@ namespace common\models;
  * @property int $spot_id
  * @property string $is_active
  * @property string $price
+ *
+ * @property Product $product
+ * @property Spot $spot
  */
 class ProductSpot extends \yii\db\ActiveRecord
 {
@@ -46,5 +49,21 @@ class ProductSpot extends \yii\db\ActiveRecord
             'is_active' => 'Активность',
             'price' => 'Цена',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProduct()
+    {
+        return $this->hasOne(Product::className(), ['id' => 'product_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSpot()
+    {
+        return $this->hasOne(Spot::className(), ['id' => 'spot_id']);
     }
 }

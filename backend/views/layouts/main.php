@@ -41,6 +41,7 @@ AppAsset::register($this);
             ['label' => 'Товары', 'url' => ['/products/index']],
             ['label' => 'Категории', 'url' => ['/categories/index']],
             ['label' => 'Заведения', 'url' => ['/spots/index']],
+            ['label' => 'Слайды', 'url' => ['/slider-items/index']],
             ['label' => 'Выход ('.Yii::$app->user->identity->username.') <span class="glyphicon glyphicon-log-out"></span>', 'url' => ['/site/logout']],
         ];
     }

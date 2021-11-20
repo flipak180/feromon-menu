@@ -2,14 +2,14 @@
 
 namespace backend\models;
 
-use common\models\Product;
+use common\models\SliderItem;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * ProductsSearch represents the model behind the search form of `common\models\Product`.
+ * SliderItemsSearch represents the model behind the search form of `common\models\SliderItem`.
  */
-class ProductsSearch extends Product
+class SliderItemsSearch extends SliderItem
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class ProductsSearch extends Product
     public function rules()
     {
         return [
-            [['id', 'category_id', 'created_at', 'updated_at'], 'integer'],
-            [['title', 'image', 'description', 'price'], 'safe'],
+            [['id', 'position', 'created_at', 'updated_at'], 'integer'],
+            [['title', 'image', 'link'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class ProductsSearch extends Product
      */
     public function search($params)
     {
-        $query = Product::find()->with(['spots', 'spots.spot']);
+        $query = SliderItem::find();
 
         // add conditions that should always apply here
 
@@ -63,15 +63,14 @@ class ProductsSearch extends Product
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'category_id' => $this->category_id,
+            'position' => $this->position,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'image', $this->image])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'price', $this->price]);
+            ->andFilterWhere(['like', 'link', $this->link]);
 
         return $dataProvider;
     }

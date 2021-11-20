@@ -225,4 +225,18 @@ class Product extends \yii\db\ActiveRecord
 
         return $tree;
     }
+
+    /**
+     * @return string
+     */
+    public function getTitleWithSpots(): string
+    {
+        $arr = [];
+        foreach ($this->spots as $spot) {
+            $title = mb_substr($spot->spot->title, 0, 2);
+            $arr[] = $spot->price ? "$title - <i>$spot->price р.</i>" : $title;
+        }
+        $spotsText = implode('; ', $arr);
+        return "<b>$this->title</b><br><small>$spotsText</small>";
+    }
 }

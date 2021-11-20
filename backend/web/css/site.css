@@ -119,6 +119,11 @@ a.desc:after {
     outline: none;
 }
 
+div.required label.control-label:after {
+    content: " *";
+    color: red;
+}
+
 .image-preview img{
     margin-bottom: 10px;
 }

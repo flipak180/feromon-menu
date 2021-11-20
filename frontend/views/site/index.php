@@ -4,6 +4,7 @@
 use common\components\Helper;
 use common\models\Category;
 use common\models\Product;
+use common\models\SliderItem;
 
 $this->title = $spot->title;
 
@@ -25,7 +26,7 @@ $productTree = Product::getTree($spot->id);
 
 <div id="mini-cart">
     <div class="icon">
-        <img src="/design/img/cart.png" alt="" class="img-responsive">
+        <img src="/design/img/logo.webp" alt="" class="img-responsive">
     </div>
     <span></span>
     <strong></strong>
@@ -60,12 +61,15 @@ $productTree = Product::getTree($spot->id);
 </section>
 
 <section class="slider">
-    <img src="/design/img/slide1.webp" alt="">
-    <img src="/design/img/slide2.webp" alt="">
-    <img src="/design/img/slide3.webp" alt="">
-    <img src="/design/img/slide4.webp" alt="">
-    <img src="/design/img/slide5.webp" alt="">
-    <img src="/design/img/slide6.webp" alt="">
+    <?php foreach (SliderItem::getList() as $sliderItem): ?>
+        <?php if ($sliderItem->link): ?>
+            <a href="<?= $sliderItem->link ?>">
+                <?= Helper::thumb($sliderItem->image, 578, 578) ?>
+            </a>
+        <?php else: ?>
+            <?= Helper::thumb($sliderItem->image, 578, 578) ?>
+        <?php endif ?>
+    <?php endforeach; ?>
 </section>
 
 <section class="container-fluid menu">
