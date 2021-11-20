@@ -5,6 +5,7 @@ $(function() {
         centerPadding: '60px',
         slidesToShow: 3,
         dots: true,
+        arrows: false,
 		prevArrow: '<a href="#" class="prev"><svg style="display:block" viewBox="0 0 9.3 17" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="#000" stroke-linejoin="butt" d="m.5.5 8 8-8 8"/></svg></a>',
 		nextArrow: '<a href="#" class="next"><svg style="display:block" viewBox="0 0 9.3 17" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="#000" stroke-linejoin="butt" d="m.5.5 8 8-8 8"/></svg></a>',
         responsive: [{
