@@ -636,6 +636,10 @@ footer {
     opacity: 1;
 }
 
+.video2 {
+    display: none;
+}
+
 @media (max-width: 1199px) {
     .products-list-item .image {
         min-height: auto;
@@ -680,8 +684,12 @@ footer {
     .grid-4, .grid-3, .grid-2 {
         grid-template-columns: 1fr;
     }
+    .category-item {
+        margin-bottom: 15px;
+    }
     .category-item .opener {
         font-size: 24px;
+        height: 100px;
     }
     .category-item h3 {
         font-size: 22px;
@@ -720,6 +728,12 @@ footer {
     }
     section.slider .slick-slide {
         margin: 0 10px;
+    }
+    .video1 {
+        display: none;
+    }
+    .video2 {
+        display: block;
     }
 }
 @media (max-width: 320px) {

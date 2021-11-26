@@ -49,8 +49,11 @@ $productTree = Product::getTree($spot->id);
 </header>
 
 <section class="video">
-    <video autoplay loop muted>
+    <video autoplay loop muted playsinline class="video1">
         <source src="/design/img/video.mp4">
+    </video>
+    <video autoplay loop muted playsinline  class="video2">
+        <source src="/design/img/video2.mp4">
     </video>
     <div class="content">
         <h1>FEROMON MENU</h1>
