@@ -36,7 +36,9 @@ use yii\widgets\ActiveForm;
         'autoFormatCode' => false,
     ]) ?>
     <?= $form->field($model, 'parent_id')->widget(Select2::classname(), [
-        'data' => ArrayHelper::map(Category::getList(true), 'id', 'title'),
+        'data' => ArrayHelper::map(Category::getList(), 'id', function($item) {
+            return $item->getPath();
+        }),
         'options' => ['placeholder' => 'Выберите категорию'],
         'pluginOptions' => [
             'allowClear' => true

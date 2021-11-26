@@ -200,9 +200,8 @@ class Product extends \yii\db\ActiveRecord
     public static function getTree($spotId): array
     {
         $flat = [];
-        $tree = [];
 
-        $categories = Category::find()->orderBy('parent_id')->asArray()->all();
+        $categories = Category::find()->orderBy('parent_id, id')->asArray()->all();
         $products = Product::find()->joinWith('spots s')->andWhere(['s.spot_id' => $spotId, 's.is_active' => true])->asArray()->all();
 
         foreach ($categories as $category) {
@@ -213,16 +212,25 @@ class Product extends \yii\db\ActiveRecord
             $flat[$product['category_id']]['products'][] = $product;
         }
 
-        foreach ($flat as $category) {
-            if (!$category['parent_id']) {
-                $tree[$category['id']] = $category;
-            } else {
-                if (count($category['products'])) {
-                    $tree[$category['parent_id']]['categories'][] = $category;
-                }
-            }
-        }
+        return self::getTreeLevel($flat, 0);
+    }
 
+    /**
+     * @param $categories
+     * @param $parentId
+     * @return array
+     */
+    private static function getTreeLevel($categories, $parentId): array
+    {
+        $tree = [];
+        foreach ($categories as $category) {
+            if ($parentId != $category['parent_id']) {
+                continue;
+            }
+
+            $category['categories'] = self::getTreeLevel($categories, $category['id']);
+            $tree[$category['id']] = $category;
+        }
         return $tree;
     }
 

@@ -14,7 +14,7 @@ class Helper
         return Yii::$app->formatter->asCurrency($number, 'RUB');
     }
 
-    public static function thumb($path, $width, $height, $options = []): string
+    public static function thumb($path, $width, $height, $options = [], $url = false): string
     {
         $fullPath = Yii::getAlias('@frontendWeb').$path;
 
@@ -22,7 +22,9 @@ class Helper
             return '';
         }
 
-        return EasyThumbnailImage::thumbnailImg($fullPath, $width, $height, EasyThumbnailImage::THUMBNAIL_INSET, $options, 80);
+        return $url ?
+            EasyThumbnailImage::thumbnailFileUrl($fullPath, $width, $height, EasyThumbnailImage::THUMBNAIL_INSET_BOX, 80) :
+            EasyThumbnailImage::thumbnailImg($fullPath, $width, $height, EasyThumbnailImage::THUMBNAIL_INSET_BOX, $options, 80);
     }
 
     public static function random(): string

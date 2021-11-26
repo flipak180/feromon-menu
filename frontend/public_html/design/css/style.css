@@ -648,6 +648,9 @@ footer {
     .grid-3 {
         grid-template-columns: repeat(auto-fill, minmax(calc(50% - 2rem), 1fr));
     }
+    .products-table-item {
+        display: block;
+    }
 }
 @media (max-width: 767px) {
     .grid-4 {
@@ -668,6 +671,12 @@ footer {
     }
 }
 @media (max-width: 575px) {
+    .container-fluid > .container {
+        padding: 0;
+    }
+    header .container {
+        grid-template-columns: repeat(12, 1fr);
+    }
     .grid-4, .grid-3, .grid-2 {
         grid-template-columns: 1fr;
     }
@@ -690,12 +699,27 @@ footer {
     }
     header .left {
         padding-right: 30px;
+        grid-column: 1/3;
+    }
+    header .left span {
+        display: none;
+    }
+    header .right {
+        grid-column: 3/11;
+        display: block;
+        text-align: center;
+    }
+    header .right .social {
+        margin: 0;
     }
     section.video h1 {
         font-size: 54px;
     }
     section.map .contacts {
         font-size: 32px;
+    }
+    section.slider .slick-slide {
+        margin: 0 10px;
     }
 }
 @media (max-width: 320px) {

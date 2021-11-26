@@ -2,7 +2,6 @@
 /* @var $spot \common\models\Spot */
 
 use common\components\Helper;
-use common\models\Category;
 use common\models\Product;
 use common\models\SliderItem;
 
@@ -18,7 +17,7 @@ $productTree = Product::getTree($spot->id);
     </label>
     <ul class="menu__box">
         <?php foreach ($productTree as $rootCategory): ?>
-            <?php if (!count($rootCategory['categories'])) continue; ?>
+            <?php if (!count($rootCategory['categories']) and !count($rootCategory['products'])) continue; ?>
             <li><a class="menu__item" href="#"><?= $rootCategory['title'] ?></a></li>
         <?php endforeach; ?>
     </ul>
@@ -64,10 +63,10 @@ $productTree = Product::getTree($spot->id);
     <?php foreach (SliderItem::getList() as $sliderItem): ?>
         <?php if ($sliderItem->link): ?>
             <a href="<?= $sliderItem->link ?>">
-                <?= Helper::thumb($sliderItem->image, 578, 578) ?>
+                <?= Helper::thumb($sliderItem->image, 578, 578, ['class' => 'img-responsive']) ?>
             </a>
         <?php else: ?>
-            <?= Helper::thumb($sliderItem->image, 578, 578) ?>
+            <?= Helper::thumb($sliderItem->image, 578, 578, ['class' => 'img-responsive']) ?>
         <?php endif ?>
     <?php endforeach; ?>
 </section>
@@ -75,49 +74,26 @@ $productTree = Product::getTree($spot->id);
 <section class="container-fluid menu">
     <div class="container">
         <?php foreach ($productTree as $rootCategory): ?>
-            <?php if (!count($rootCategory['categories'])) continue; ?>
+            <?php if (!count($rootCategory['categories']) and !count($rootCategory['products'])) continue; ?>
             <div class="category-item">
-                <a href="" class="opener" style="background-image: url(<?= $rootCategory['image'] ?>)"><?= $rootCategory['title'] ?></a>
+                <a href="" class="opener" style="background-image: url(<?= Helper::thumb($rootCategory['image'], 1290, 124, [], true) ?>)"><?= $rootCategory['title'] ?></a>
                 <div class="content">
                     <?= $rootCategory['description'] ?>
                     <?php foreach ($rootCategory['categories'] as $childCategory): ?>
                         <div class="subcategory-item">
                             <h3><?= $childCategory['title'] ?> <span class="line"></span></h3>
                             <?= $childCategory['description'] ?>
-                            <?php if ($childCategory['view'] == Category::VIEW_TABLE): ?>
-                                <div class="products-table">
-                                    <?php foreach ($childCategory['products'] as $product): ?>
-                                        <div class="products-table-item">
-                                            <div>
-                                                <h4><?= $product['title'] ?></h4>
-                                            </div>
-                                            <div>
-                                                <strong class="price"><?= Helper::price($product['price']) ?></strong>
-                                                <a href="" class="add-to-cart" data-id="<?= $product['id'] ?>">Добавить к заказу</a>
-                                            </div>
-                                        </div>
-                                    <?php endforeach; ?>
+                            <?= $this->render('_products', ['category' => $childCategory]) ?>
+                            <?php foreach ($childCategory['categories'] as $subChildCategory): ?>
+                                <div class="subcategory-item">
+                                    <h4><?= $subChildCategory['title'] ?></h4>
+                                    <?= $subChildCategory['description'] ?>
+                                    <?= $this->render('_products', ['category' => $subChildCategory]) ?>
                                 </div>
-                            <?php else: ?>
-                                <div class="products-list grid-<?= $childCategory['view'] ?>">
-                                    <?php foreach ($childCategory['products'] as $product): ?>
-                                        <div class="products-list-item">
-                                            <div class="image">
-                                                <img class="img-responsive" src="<?= $product['image'] ?>" alt="">
-                                                <?php if ($product['image2']): ?>
-                                                    <img class=img-responsive src="<?= $product['image2'] ?>" alt="">
-                                                <?php endif ?>
-                                            </div>
-                                            <h4><?= $product['title'] ?></h4>
-                                            <?= $product['description'] ?>
-                                            <div class="price"><?= Helper::price($product['price']) ?></div>
-                                            <a href="" class="add-to-cart" data-id="<?= $product['id'] ?>" data-image="<?= $product['image'] ?>">Добавить к заказу</a>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            <?php endif ?>
+                            <?php endforeach; ?>
                         </div>
                     <?php endforeach; ?>
+                    <?= $this->render('_products', ['category' => $rootCategory]) ?>
                 </div>
             </div>
         <?php endforeach; ?>
