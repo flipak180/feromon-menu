@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['style' => 'width: 200px;'],
             ],
             //'updated_at',
-            ['class' => 'yii\grid\ActionColumn', 'template' => '{update}{delete}'],
+            ['class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}'],
         ],
     ]); ?>
 </div>

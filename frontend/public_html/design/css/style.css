@@ -407,9 +407,7 @@ footer {
     z-index: 5;
     color: white;
 }
-
-/* age-popup */
-#age-popup {
+.popup {
     display: none;
     position: fixed;
     top: 50%;
@@ -422,6 +420,11 @@ footer {
     max-width: 450px;
     color: #000;
     text-align: center;
+}
+
+/* age-popup */
+#age-popup {
+
 }
 #age-popup p {
     margin-bottom: 30px;
@@ -560,18 +563,8 @@ footer {
 
 /* cart-popup */
 #cart-popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    z-index: 6;
-    background: #fff;
     padding: 30px;
-    transform: translate(-50%, -50%);
-    width: 90%;
     max-width: 550px;
-    color: #000;
-    text-align: center;
     max-height: 90vh;
     overflow-y: auto;
 }
@@ -638,6 +631,22 @@ footer {
 
 .video2 {
     display: none;
+}
+.dont-know {
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 30px;
+    text-decoration: none;
+    display: inline-block;
+}
+#dont-know-popup {
+    text-align: left;
+}
+#dont-know-popup h4 {
+    font-size: 18px;
+    font-weight: bold;
 }
 
 @media (max-width: 1199px) {

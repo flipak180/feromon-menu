@@ -1,13 +1,18 @@
 <?php
-/* @var $spot \common\models\Spot */
+/* @var $spot Spot */
+/* @var $dontKnow Taste */
 
 use common\components\Helper;
 use common\models\Product;
 use common\models\SliderItem;
+use common\models\Spot;
+use common\models\Taste;
 
 $this->title = $spot->title;
 
 $productTree = Product::getTree($spot->id);
+$dontKnow = Taste::find()->orderBy('RAND()')->one();
+Yii::info($productTree);
 ?>
 
 <aside>
@@ -81,6 +86,9 @@ $productTree = Product::getTree($spot->id);
             <div class="category-item">
                 <a href="" class="opener" style="background-image: url(<?= Helper::thumb($rootCategory['image'], 1290, 124, [], true) ?>)"><?= $rootCategory['title'] ?></a>
                 <div class="content">
+                    <?php if ($rootCategory['title'] == 'Кальян'): ?>
+                        <button class="dont-know">Не знаю что покурить</button>
+                    <?php endif ?>
                     <?= $rootCategory['description'] ?>
                     <?php foreach ($rootCategory['categories'] as $childCategory): ?>
                         <div class="subcategory-item">
@@ -160,8 +168,17 @@ $productTree = Product::getTree($spot->id);
 </footer>
 
 <div id="overlay"></div>
-<div id="cart-popup"></div>
-<div id="age-popup">
+<div id="cart-popup" class="popup"></div>
+<div id="age-popup" class="popup">
     <p>Вам есть 18 лет?</p>
     <a href="">Да, мне есть 18 лет</a>
 </div>
+
+<?php if ($dontKnow): ?>
+    <div id="dont-know-popup" class="popup">
+        <p>Категория: <strong><?= $dontKnow->category ?></strong></p>
+        <p>Название микса: <strong><?= $dontKnow->title ?></strong></p>
+        <h4>Описание</h4>
+        <?= $dontKnow->description ?>
+    </div>
+<?php endif ?>

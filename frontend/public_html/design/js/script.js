@@ -134,12 +134,16 @@ $(function() {
         cartPopup.html(cartHtml);
     }
 
+    $('.dont-know').click(function() {
+        $('#dont-know-popup, #overlay').show();
+    });
+
     $('#mini-cart').click(function() {
         $('#cart-popup, #overlay').show();
     });
 
     $('#overlay').click(function() {
-        $('#cart-popup, #overlay').hide();
+        $('#dont-know-popup, #cart-popup, #overlay').hide();
     });
 
     cartPopup.on('click', '.minus', function() {

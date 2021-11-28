@@ -14,10 +14,12 @@ use common\models\Category;
                     <h4><?= $product['title'] ?></h4>
                     <small><?= $product['description'] ?></small>
                 </div>
-                <div>
-                    <strong class="price"><?= Helper::price($product['price']) ?></strong>
-                    <a href="" class="add-to-cart" data-id="<?= $product['id'] ?>">Добавить к заказу</a>
-                </div>
+                <?php if ($product['price'] > 0): ?>
+                    <div>
+                        <strong class="price"><?= Helper::price($product['price']) ?></strong>
+                        <a href="" class="add-to-cart" data-id="<?= $product['id'] ?>">Добавить к заказу</a>
+                    </div>
+                <?php endif ?>
             </div>
         <?php endforeach; ?>
     </div>
@@ -36,8 +38,10 @@ use common\models\Category;
                 </div>
                 <h4><?= $product['title'] ?></h4>
                 <?= $product['description'] ?>
-                <div class="price"><?= Helper::price($product['price']) ?></div>
-                <a href="" class="add-to-cart" data-id="<?= $product['id'] ?>" data-image="<?= $product['image'] ?>">Добавить к заказу</a>
+                <?php if ($product['price'] > 0): ?>
+                    <div class="price"><?= Helper::price($product['price']) ?></div>
+                    <a href="" class="add-to-cart" data-id="<?= $product['id'] ?>" data-image="<?= $product['image'] ?>">Добавить к заказу</a>
+                <?php endif ?>
             </div>
         <?php endforeach; ?>
     </div>
