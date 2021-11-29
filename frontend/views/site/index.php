@@ -22,7 +22,7 @@ Yii::info($productTree);
     </label>
     <ul class="menu__box">
         <?php foreach ($productTree as $rootCategory): ?>
-            <?php if (!count($rootCategory['categories']) and !count($rootCategory['products'])) continue; ?>
+            <?php if (!$rootCategory['is_active']) continue; ?>
             <li><a class="menu__item" href="#"><?= $rootCategory['title'] ?></a></li>
         <?php endforeach; ?>
     </ul>
@@ -82,7 +82,7 @@ Yii::info($productTree);
 <section class="container-fluid menu">
     <div class="container">
         <?php foreach ($productTree as $rootCategory): ?>
-            <?php if (!count($rootCategory['categories']) and !count($rootCategory['products'])) continue; ?>
+            <?php if (!$rootCategory['is_active']) continue; ?>
             <div class="category-item">
                 <a href="" class="opener" style="background-image: url(<?= Helper::thumb($rootCategory['image'], 1290, 124, [], true) ?>)"><?= $rootCategory['title'] ?></a>
                 <div class="content">
