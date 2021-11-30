@@ -7,6 +7,8 @@ use common\models\Product;
 use common\models\SliderItem;
 use common\models\Spot;
 use common\models\Taste;
+use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 
 $this->title = $spot->title;
 
@@ -86,25 +88,33 @@ Yii::info($productTree);
             <div class="category-item">
                 <a href="" class="opener" style="background-image: url(<?= Helper::thumb($rootCategory['image'], 1290, 124, [], true) ?>)"><?= $rootCategory['title'] ?></a>
                 <div class="content">
-                    <?php if ($rootCategory['title'] == 'Кальян'): ?>
-                        <button class="dont-know">Не знаю что покурить</button>
-                    <?php endif ?>
                     <?= $rootCategory['description'] ?>
                     <?php foreach ($rootCategory['categories'] as $childCategory): ?>
                         <div class="subcategory-item">
                             <h3><?= $childCategory['title'] ?> <span class="line"></span></h3>
                             <?= $childCategory['description'] ?>
-                            <?= $this->render('_products', ['category' => $childCategory]) ?>
+                            <?php if (count($childCategory['products'])): ?>
+                                <?= $this->render('_products', ['category' => $childCategory]) ?>
+                            <?php endif ?>
                             <?php foreach ($childCategory['categories'] as $subChildCategory): ?>
                                 <div class="subcategory-item">
                                     <h4><?= $subChildCategory['title'] ?></h4>
                                     <?= $subChildCategory['description'] ?>
-                                    <?= $this->render('_products', ['category' => $subChildCategory]) ?>
+                                    <?php if (count($subChildCategory['products'])): ?>
+                                        <?= $this->render('_products', ['category' => $subChildCategory]) ?>
+                                    <?php endif ?>
                                 </div>
                             <?php endforeach; ?>
                         </div>
                     <?php endforeach; ?>
-                    <?= $this->render('_products', ['category' => $rootCategory]) ?>
+                    <?php if (count($rootCategory['products'])): ?>
+                        <?= $this->render('_products', ['category' => $rootCategory]) ?>
+                    <?php endif ?>
+                    <?php if ($rootCategory['title'] == 'Кальян'): ?>
+                        <div class="text-center">
+                            <button class="dont-know btn">Не знаю что покурить</button>
+                        </div>
+                    <?php endif ?>
                 </div>
             </div>
         <?php endforeach; ?>
@@ -134,6 +144,8 @@ Yii::info($productTree);
             <div class="copy">
                 <p>FEROMON GROUP</p>
                 <a href="">Политика конфиденциальности</a>
+                <p><small>Мы прислушиваемся к вашим пожеланиям!</small> <br> <a href="mailto:aduard24@bk.ru">Будем рады предложениям по меню!</a></p>
+                <p><a href="" class="feedback-link">Ваши любимые блюда в нашем меню! Подскажите свои желания!</a></p>
             </div>
         </div>
     </div>
@@ -172,6 +184,12 @@ Yii::info($productTree);
 <div id="age-popup" class="popup">
     <p>Вам есть 18 лет?</p>
     <a href="">Да, мне есть 18 лет</a>
+</div>
+<div id="feedback-popup" class="popup">
+    <?php $form = ActiveForm::begin(['action' => Url::to(['site/feedback'])]); ?>
+        <textarea name="text" placeholder="Текст сообщения..."></textarea>
+        <button class="btn">Отправить</button>
+    <?php ActiveForm::end(); ?>
 </div>
 
 <?php if ($dontKnow): ?>

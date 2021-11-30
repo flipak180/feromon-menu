@@ -142,8 +142,13 @@ $(function() {
         $('#cart-popup, #overlay').show();
     });
 
+    $('.feedback-link').click(function() {
+        $('#feedback-popup, #overlay').show();
+        return false;
+    });
+
     $('#overlay').click(function() {
-        $('#dont-know-popup, #cart-popup, #overlay').hide();
+        $('.popup, #overlay').hide();
     });
 
     cartPopup.on('click', '.minus', function() {

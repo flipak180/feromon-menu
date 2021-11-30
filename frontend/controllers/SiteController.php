@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use Yii;
 use yii\web\Controller;
 
 class SiteController extends Controller
@@ -19,6 +20,20 @@ class SiteController extends Controller
     public function actionIndex($spot)
     {
         return $this->render('index', ['spot' => $spot]);
+    }
+
+    public function actionFeedback()
+    {
+        $text = \Yii::$app->request->post('text');
+        if ($text) {
+            Yii::$app->mailer->compose()
+                ->setFrom('aduard24@bk.ru')
+                ->setTo('flipak180@mail.ru')
+                ->setSubject('Сообщение с сайта feromon-menu')
+                ->setTextBody($text)
+                ->send();
+        }
+        return $this->redirect(\Yii::$app->request->referrer);
     }
 
 }

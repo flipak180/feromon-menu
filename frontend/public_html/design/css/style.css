@@ -632,14 +632,18 @@ footer {
 .video2 {
     display: none;
 }
-.dont-know {
-    background: transparent;
-    border: 1px solid #fff;
+.btn {
+    background: #b04098;
+    border: none;
     color: #fff;
     border-radius: 5px;
     padding: 10px 30px;
     text-decoration: none;
     display: inline-block;
+}
+.dont-know {
+    font-size: 24px;
+    font-weight: bold;
 }
 #dont-know-popup {
     text-align: left;
@@ -647,6 +651,20 @@ footer {
 #dont-know-popup h4 {
     font-size: 18px;
     font-weight: bold;
+}
+.text-center {
+    text-align: center;
+}
+.feedback-link {
+    color: #b04098;
+}
+#feedback-popup textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+}
+#feedback-popup button {
+
 }
 
 @media (max-width: 1199px) {
