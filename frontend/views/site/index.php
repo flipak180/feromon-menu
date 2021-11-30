@@ -90,12 +90,11 @@ Yii::info($productTree);
                 <div class="content">
                     <?= $rootCategory['description'] ?>
                     <?php foreach ($rootCategory['categories'] as $childCategory): ?>
+                        <?php if (!$childCategory['products']) continue; ?>
                         <div class="subcategory-item">
                             <h3><?= $childCategory['title'] ?> <span class="line"></span></h3>
                             <?= $childCategory['description'] ?>
-                            <?php if (count($childCategory['products'])): ?>
-                                <?= $this->render('_products', ['category' => $childCategory]) ?>
-                            <?php endif ?>
+                            <?= $this->render('_products', ['category' => $childCategory]) ?>
                             <?php foreach ($childCategory['categories'] as $subChildCategory): ?>
                                 <div class="subcategory-item">
                                     <h4><?= $subChildCategory['title'] ?></h4>
@@ -107,9 +106,7 @@ Yii::info($productTree);
                             <?php endforeach; ?>
                         </div>
                     <?php endforeach; ?>
-                    <?php if (count($rootCategory['products'])): ?>
-                        <?= $this->render('_products', ['category' => $rootCategory]) ?>
-                    <?php endif ?>
+                    <?= $this->render('_products', ['category' => $rootCategory]) ?>
                     <?php if ($rootCategory['title'] == 'Кальян'): ?>
                         <div class="text-center">
                             <button class="dont-know btn">Не знаю что покурить</button>
