@@ -271,6 +271,13 @@ section.menu {
     text-decoration: none;
     display: inline-block;
 }
+.products-list-item .add-to-cart:hover {
+    background: -webkit-linear-gradient(#b04098 0%, #5a1594 100%);
+    border: 1px solid #b04098;
+}
+.img-responsive:hover {
+	cursor: pointer
+}
 .products-list-item .image {
     min-height: 420px;
 }

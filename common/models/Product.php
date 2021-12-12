@@ -209,38 +209,37 @@ class Product extends \yii\db\ActiveRecord
         }
 
         foreach ($products as $product) {
+            if (!$product['price']) continue;
             $flat[$product['category_id']]['is_active'] = true;
             $flat[$product['category_id']]['products'][] = $product;
         }
 
-        return self::getTreeLevel($flat, 0);
+        $activeParents = [];
+        return self::getTreeLevel($flat, 0, $activeParents);
     }
 
     /**
      * @param $categories
      * @param $parentId
-     * @param bool $isActive
+     * @param $activeParents
      * @return array
      */
-    private static function getTreeLevel($categories, $parentId, &$isActive = false): array
+    private static function getTreeLevel($categories, $parentId, &$activeParents): array
     {
         $tree = [];
         foreach ($categories as $category) {
-            if (!$parentId) {
-                $isActive = false;
-            }
-
             if ($parentId != $category['parent_id']) {
                 continue;
             }
 
-            if (count($category['products'])) {
-                $isActive = true;
+            $category['categories'] = self::getTreeLevel($categories, $category['id'], $activeParents);
+
+            $category['is_active'] = (count($category['products']) || in_array($category['id'], $activeParents));
+            if ($category['is_active'] and !in_array($category['parent_id'], $activeParents)) {
+                $activeParents[] = $category['parent_id'];
             }
 
-            $category['categories'] = self::getTreeLevel($categories, $category['id'], $isActive);
             $tree[$category['id']] = $category;
-            $tree[$category['id']]['is_active'] = $isActive;
         }
         return $tree;
     }

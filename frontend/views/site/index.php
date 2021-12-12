@@ -14,7 +14,7 @@ $this->title = $spot->title;
 
 $productTree = Product::getTree($spot->id);
 $dontKnow = Taste::find()->orderBy('RAND()')->one();
-Yii::info($productTree);
+//Yii::info($productTree);
 ?>
 
 <aside>
@@ -70,7 +70,11 @@ Yii::info($productTree);
 </section>
 
 <section class="slider">
+	<a href="" class="feedback-link">
+	    	<img src="/design/img/FG1.jpg" class="img-responsive">
+    	</a>
     <?php foreach (SliderItem::getList() as $sliderItem): ?>
+    	
         <?php if ($sliderItem->link): ?>
             <a href="<?= $sliderItem->link ?>">
                 <?= Helper::thumb($sliderItem->image, 578, 578, ['class' => 'img-responsive']) ?>
@@ -90,12 +94,13 @@ Yii::info($productTree);
                 <div class="content">
                     <?= $rootCategory['description'] ?>
                     <?php foreach ($rootCategory['categories'] as $childCategory): ?>
-                        <?php if (!$childCategory['products']) continue; ?>
+                        <?php if (!$childCategory['is_active']) continue; ?>
                         <div class="subcategory-item">
                             <h3><?= $childCategory['title'] ?> <span class="line"></span></h3>
                             <?= $childCategory['description'] ?>
                             <?= $this->render('_products', ['category' => $childCategory]) ?>
                             <?php foreach ($childCategory['categories'] as $subChildCategory): ?>
+                                <?php if (!$subChildCategory['is_active']) continue; ?>
                                 <div class="subcategory-item">
                                     <h4><?= $subChildCategory['title'] ?></h4>
                                     <?= $subChildCategory['description'] ?>
@@ -125,6 +130,7 @@ Yii::info($productTree);
         </div>
         <div class="right">
             <div class="contacts">
+<!-- 	            <p><a href="" class="feedback-link">Ваши любимые блюда в нашем меню! Подскажите свои желания!</a></p> -->
                 <p><strong>Телефон:</strong></p>
                 <p><?= $spot->phone ?></p>
                 <p><strong>Адрес:</strong></p>
@@ -141,8 +147,8 @@ Yii::info($productTree);
             <div class="copy">
                 <p>FEROMON GROUP</p>
                 <a href="">Политика конфиденциальности</a>
-                <p><small>Мы прислушиваемся к вашим пожеланиям!</small> <br> <a href="mailto:aduard24@bk.ru">Будем рады предложениям по меню!</a></p>
-                <p><a href="" class="feedback-link">Ваши любимые блюда в нашем меню! Подскажите свои желания!</a></p>
+<!--                 <p><small>Мы прислушиваемся к вашим пожеланиям!</small> <br> <a href="mailto:aduard24@bk.ru">Будем рады предложениям по меню!</a></p> -->
+                
             </div>
         </div>
     </div>
