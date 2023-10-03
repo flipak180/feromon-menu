@@ -201,8 +201,8 @@ class Product extends \yii\db\ActiveRecord
     {
         $flat = [];
 
-        $categories = Category::find()->orderBy('parent_id, id')->asArray()->all();
-        $products = Product::find()->joinWith('spots s')->andWhere(['s.spot_id' => $spotId, 's.is_active' => true])->asArray()->all();
+        $categories = Category::find()->orderBy('position')->asArray()->all();
+        $products = Product::find()->joinWith('spots s')->andWhere(['s.spot_id' => $spotId, 's.is_active' => true])->orderBy(['position' => SORT_ASC])->asArray()->all();
 
         foreach ($categories as $category) {
             $flat[$category['id']] = ArrayHelper::merge($category, ['categories' => [], 'products' => [], 'is_active' => false]);
@@ -251,8 +251,10 @@ class Product extends \yii\db\ActiveRecord
     {
         $arr = [];
         foreach ($this->spots as $spot) {
-            $title = mb_substr($spot->spot->title, 0, 2);
-            $arr[] = $spot->price ? "$title - <i>$spot->price р.</i>" : $title;
+            if ($spot->spot) {
+                $title = mb_substr($spot->spot->title, 0, 2);
+                $arr[] = $spot->price ? "$title - <i>$spot->price р.</i>" : $title;
+            }
         }
         $spotsText = implode('; ', $arr);
         return "<b>$this->title</b><br><small>$spotsText</small>";

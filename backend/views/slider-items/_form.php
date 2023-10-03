@@ -1,9 +1,12 @@
 <?php
 
 use common\components\Helper;
+use common\models\Spot;
 use kartik\widgets\FileInput;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+
 
 /* @var $this yii\web\View */
 /* @var $model common\models\SliderItem */
@@ -29,6 +32,11 @@ use yii\widgets\ActiveForm;
         </div>
     <?php endif ?>
     <?= $form->field($model, 'link')->textInput(['maxlength' => true]) ?>
+
+    <div class="form-group spots-info">
+        <?= Html::activeCheckboxList($model, 'spots_ids', ArrayHelper::map(Spot::getList(), 'id', 'title')) ?>
+    </div>
+
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>

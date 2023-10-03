@@ -30,6 +30,9 @@ class Category extends \yii\db\ActiveRecord
     const VIEW_3_COLS = 3;
     const VIEW_4_COLS = 4;
     const VIEW_TABLE = 5;
+    const VIEW_ACCORDION = 6;
+    const VIEW_ACCORDION_TABLE = 7;
+    const VIEW_SLIDER = 8;
 
     /**
      * {@inheritdoc}
@@ -118,6 +121,9 @@ class Category extends \yii\db\ActiveRecord
             self::VIEW_3_COLS => 'Три колонки',
             self::VIEW_4_COLS => 'Четыре колонки',
             self::VIEW_TABLE => 'Таблица',
+            self::VIEW_ACCORDION => 'Аккордион',
+            self::VIEW_ACCORDION_TABLE => 'Аккордион таблица',
+            self::VIEW_SLIDER => 'Слайдер',
         ];
     }
 

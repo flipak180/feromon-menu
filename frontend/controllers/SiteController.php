@@ -21,6 +21,11 @@ class SiteController extends Controller
     {
         return $this->render('index', ['spot' => $spot]);
     }
+    
+    public function actionPolitika()
+    {
+        return $this->render('politika');
+    }
 
     public function actionFeedback()
     {
@@ -28,7 +33,7 @@ class SiteController extends Controller
         if ($text) {
             Yii::$app->mailer->compose()
                 ->setFrom('aduard24@bk.ru')
-                ->setTo('flipak180@mail.ru')
+                ->setTo('dima.withsmile@gmail.com')
                 ->setSubject('Сообщение с сайта feromon-menu')
                 ->setTextBody($text)
                 ->send();
