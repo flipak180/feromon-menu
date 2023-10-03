@@ -209,7 +209,7 @@ class Product extends \yii\db\ActiveRecord
         }
 
         foreach ($products as $product) {
-            if (!$product['price']) continue;
+            //if (!$product['price']) continue;
             $flat[$product['category_id']]['is_active'] = true;
             $flat[$product['category_id']]['products'][] = $product;
         }

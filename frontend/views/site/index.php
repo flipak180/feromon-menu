@@ -14,7 +14,7 @@ $this->title = $spot->title;
 
 $productTree = Product::getTree($spot->id);
 $dontKnow = Taste::find()->orderBy('RAND()')->one();
-//Yii::info($productTree);
+Yii::info($productTree);
 ?>
 
 <aside>

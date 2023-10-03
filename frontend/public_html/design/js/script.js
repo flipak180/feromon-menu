@@ -48,6 +48,7 @@ $(function() {
             category = document.getElementsByClassName('category-item')[index];
         category.scrollIntoView();
         $(category).find('.content').slideDown();
+        $('#menu__toggle').prop('checked', false);
         return false;
     });
 
