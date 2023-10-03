@@ -1,6 +1,5 @@
 <?php
 
-use common\components\Helper;
 use common\models\Category;
 use himiklab\sortablegrid\SortableGridView;
 use yii\helpers\ArrayHelper;
@@ -29,15 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['style' => 'width: 75px;'],
             ],
             'title',
-            [
-                'attribute' => 'image',
-                'format' => 'raw',
-                'value' => function($model) {
-                    return Helper::thumb($model->image, 500, 50);
-                },
-                'filter' => false,
-                'headerOptions' => ['style' => 'width: 500px;'],
-            ],
+            // [
+            //     'attribute' => 'image',
+            //     'format' => 'raw',
+            //     'value' =>$model->image,
+            //     'filter' => false,
+            //     'headerOptions' => ['style' => 'width: 500px;'],
+            // ],
             //'description:ntext',
             [
                 'attribute' => 'parent_id',
