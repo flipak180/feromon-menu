@@ -6,23 +6,38 @@ use common\components\Helper;
 use common\models\Category;
 use common\models\Product;
 use common\models\SliderItem;
+use common\models\Spot;
 
 class DataController extends BaseApiController
 {
 
+    /**
+     * @param $parent
+     * @return array|\yii\db\ActiveRecord[]
+     */
     public function actionCategories($parent = null)
     {
         return Category::find()->all();
     }
 
+    /**
+     * @param $place
+     * @param $category
+     * @return array
+     */
     public function actionProducts($place = null, $category = null)
     {
         if (!$place) {
             return [];
         }
 
+        $spot = Spot::findOne(['url' => $place]);
+        if (!$spot) {
+            return [];
+        }
 
         $categories = [$category];
+        /** @var Category $subCategories */
         $subCategories = Category::find()->where(['parent_id' => $category])->all();
         foreach ($subCategories as $subCategory) {
             $categories[] = $subCategory->id;
@@ -30,7 +45,12 @@ class DataController extends BaseApiController
 
         $items = [];
         /** @var Product[] $models */
-        $models = Product::find()->where(['in', 'category_id', $categories])->orderBy(['position' => SORT_ASC])->all();
+        $models = Product::find()
+            ->joinWith('spots s')
+            ->andWhere(['s.spot_id' => $spot->id, 's.is_active' => true])
+            ->andWhere(['in', 'category_id', $categories])
+            ->orderBy(['position' => SORT_ASC])
+            ->all();
         foreach ($models as $model) {
             $items[] = [
                 'id' => $model->id,
@@ -45,9 +65,31 @@ class DataController extends BaseApiController
         return $items;
     }
 
-    public function actionBanners()
+    /**
+     * @param $place
+     * @return array
+     */
+    public function actionBanners($place = null)
     {
-        return SliderItem::find()->orderBy(['position' => SORT_ASC])->all();
+        if (!$place) {
+            return [];
+        }
+
+        $spot = Spot::findOne(['url' => $place]);
+        if (!$spot) {
+            return [];
+        }
+
+        $result = [];
+
+        /** @var SliderItem[] $slides */
+        $slides = SliderItem::find()->orderBy(['position' => SORT_ASC])->all();
+        foreach ($slides as $slide) {
+            if (in_array($spot->id, $slide->spots_ids)) {
+                $result[] = $slide;
+            }
+        }
+        return $result;
     }
 
 }
