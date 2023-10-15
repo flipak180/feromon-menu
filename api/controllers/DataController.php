@@ -15,8 +15,13 @@ class DataController extends BaseApiController
         return Category::find()->all();
     }
 
-    public function actionProducts($category = null)
+    public function actionProducts($place = null, $category = null)
     {
+        if (!$place) {
+            return [];
+        }
+
+
         $categories = [$category];
         $subCategories = Category::find()->where(['parent_id' => $category])->all();
         foreach ($subCategories as $subCategory) {
