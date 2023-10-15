@@ -45,6 +45,7 @@ return [
             'rules' => [
                 'GET categories' => 'data/categories',
                 'GET products' => 'data/products',
+                'GET banners' => 'data/banners',
                 // 'POST,OPTIONS quests/start' => 'quest/start',
             ],        
         ]

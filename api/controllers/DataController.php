@@ -5,6 +5,7 @@ namespace app\controllers;
 use common\components\Helper;
 use common\models\Category;
 use common\models\Product;
+use common\models\SliderItem;
 
 class DataController extends BaseApiController
 {
@@ -37,6 +38,11 @@ class DataController extends BaseApiController
             ];
         }
         return $items;
+    }
+
+    public function actionBanners()
+    {
+        return SliderItem::find()->orderBy(['position' => SORT_ASC])->all();
     }
 
 }
