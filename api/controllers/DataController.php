@@ -7,17 +7,34 @@ use common\models\Category;
 use common\models\Product;
 use common\models\SliderItem;
 use common\models\Spot;
+use Yii;
+use yii\helpers\ArrayHelper;
 
 class DataController extends BaseApiController
 {
 
     /**
      * @param $parent
-     * @return array|\yii\db\ActiveRecord[]
+     * @return array
+     * @throws \yii\db\Exception
      */
     public function actionCategories($parent = null)
     {
-        return Category::find()->all();
+        $result = [];
+
+        /** @var Category[] $categories */
+        $categories = Category::find()->all();
+        $totalProductsMap = Yii::$app->db->createCommand('SELECT category_id, count(*) as total FROM products GROUP BY category_id')
+            ->queryAll();
+
+        foreach ($categories as $category) {
+            $key = array_search($category->id, array_column($totalProductsMap, 'category_id'));
+            $result[] = ArrayHelper::merge($category->attributes, [
+                'total_products' => ($key !== false) ? (int)$totalProductsMap[$key]['total'] : 0,
+            ]);
+        }
+
+        return $result;
     }
 
     /**
