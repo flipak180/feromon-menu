@@ -18,14 +18,19 @@ class DataController extends BaseApiController
      * @return array
      * @throws \yii\db\Exception
      */
-    public function actionCategories($parent = null)
+    public function actionCategories($parent = null, $place = null)
     {
         $result = [];
 
         /** @var Category[] $categories */
         $categories = Category::find()->all();
-        $totalProductsMap = Yii::$app->db->createCommand('SELECT category_id, count(*) as total FROM products GROUP BY category_id')
-            ->queryAll();
+        $totalProductsMap = Yii::$app->db->createCommand('
+            SELECT category_id, count(*) as total FROM products
+            LEFT JOIN product_spots ON product_spots.product_id = products.id
+            LEFT JOIN spots ON product_spots.spot_id = spots.id
+            WHERE spots.url = :place AND product_spots.is_active = 1
+            GROUP BY category_id
+        ')->bindParam(':place', $place)->queryAll();
 
         foreach ($categories as $category) {
             $key = array_search($category->id, array_column($totalProductsMap, 'category_id'));
